@@ -1,4 +1,5 @@
 import numpy as np
+import variables as v
 
 class Tablero:
        
@@ -7,7 +8,7 @@ class Tablero:
         self.alto = lado
 
     def crear_tablero(self):
-        nuevo_tablero = np.full((self.ancho, self.alto), "\u007E")
+        nuevo_tablero = np.full((self.ancho, self.alto), v.SIMBOLOS["vacío"])
         return nuevo_tablero
         
 

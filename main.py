@@ -1,13 +1,12 @@
-import barco as b
-import tablero as t
 import funciones as f
+import variables as v
 
-f.setup_partida() # H: funcion para iniciar tableros y reflejar los barcos
+# Inicia los tableros y los barcos
+f.setup_partida() 
 
-
-# Creo que aqui habría que reflejar el while de While-HundirLaFlota, necesitando hacer un script donde van las funciones, tal y como esta montado
-# se me hace lioso utilizarlo como una clase, ademas es la parte que mas depende del resto y es complejo adapatarlo sin saber todo a lo que hay que llamar realmente
-
+# Bucle que inicializa la partida
+while v.jugando:
+    f.disparo(v.tablero_jugador, v.tablero_maquina, v.lista_posiciones_maquina)
 
 
 

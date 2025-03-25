@@ -1,5 +1,6 @@
 class Barco:
-    flota = [] # aqui se van a ir guardando los barcos que se generen
+    # Lista donde se guardan los barcos
+    flota = [] 
 
     def __init__(self, longitud):
         """
