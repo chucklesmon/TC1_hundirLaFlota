@@ -2,35 +2,22 @@ import barco as b
 import numpy as np
 import random
 import tablero as t
-import pandas as pd
 import variables as v
 
 """
 funciones hugo
 """
-# H: Inicia lo necesario para la partida, genera tableros y coloca los barcos, la generacion de barcos habría que cambiarla por una funcion generar_flota
+# Inicia lo necesario para la partida, genera tableros y coloca los barcos, la generacion de barcos habría que cambiarla por una funcion generar_flota
 # para poder generar los barcos que quieras
 def setup_partida():
     v.tablero_jugador = t.Tablero().crear_tablero()
     v.tablero_maquina = t.Tablero().crear_tablero()
     v.tablero_disparos_jugador = t.Tablero().crear_tablero()
     v.tablero_disparos_maquina = t.Tablero().crear_tablero()
-    barco_1 = b.Barco(4)
-    barco_2 = b.Barco(3)
-    barco_3 = b.Barco(3)
-    barco_4 = b.Barco(2)
-    barco_5 = b.Barco(2)
-    barco_6 = b.Barco(2)
-    barco_7 = b.Barco(1)
-    barco_8 = b.Barco(1)
-    barco_9 = b.Barco(1)
-    barco_10 = b.Barco(1)
+    b.Barco.crear_barcos()
 
     flota = colocar_barcos(v.tablero_jugador)
     flota_maquina = colocar_barcos(v.tablero_maquina)
-
-    print(flota) # H: comprobacion para ver si monta el tablero bien
-    print(flota_maquina) # H: comprobacion para ver si monta el tablero bien
 
     return flota, flota_maquina
 
@@ -40,12 +27,12 @@ funciones antonio
 def colocar_barcos(tablero_base):
     #Llama a la función que crea los barcos para colocar
     tablero_marcas = tablero_base
-    flota_creada = b.Barco.devolver_flota() # H: modificacion para coger la lista de barcos
+    flota_creada = b.Barco.devolver_flota()
 
     #Convoca uno por uno a todos los barcos de la flota
     for elem in flota_creada:
         #Determina la eslora del barco
-        eslora = len(elem.barco) # H: modificacion por usar objetos
+        eslora = len(elem.barco)
         en_tablero = False
         sin_colision = False
         con_distancia = False
@@ -209,7 +196,7 @@ def disparo(tablero_jugador, tablero_maquina, lista_posiciones_maquina):
                     print("Coordenadas fuera de rango. Inténtalo de nuevo.")
                     continue
 
-                if v.tablero_disparos_jugador[fila, columna] != v.SIMBOLOS["agua"]:  # H: cuadrado blanco
+                if v.tablero_disparos_jugador[fila, columna] != v.SIMBOLOS["agua"]: 
                     break  # Coordenada válida                                   
                 else:                                                       
                     print("Ya has disparado ahí. Elige otra coordenada.")
@@ -218,14 +205,12 @@ def disparo(tablero_jugador, tablero_maquina, lista_posiciones_maquina):
                 continue
 
         # Comprobar impacto en el tablero de la máquina
-        if v.tablero_maquina[fila, columna] == v.SIMBOLOS["barco"]: # H: misma duda que con tablero_disparos
+        if v.tablero_maquina[fila, columna] == v.SIMBOLOS["barco"]:
             print("¡Impacto!")
             v.tablero_maquina[fila, columna] = v.SIMBOLOS["impacto"] # fuego
             v.tablero_disparos_jugador[fila, columna] = v.SIMBOLOS["impacto"] # fuego
             mostrar_tablero(v.tablero_jugador)  # Llamada a la función de Alejandro
             mostrar_tablero(v.tablero_disparos_jugador)
-            mostrar_tablero(v.tablero_maquina)  # Llamada a la función de Alejandro
-            mostrar_tablero(v.tablero_disparos_maquina)
 
             comprobar_victoria(v.tablero_maquina)
 
@@ -237,17 +222,12 @@ def disparo(tablero_jugador, tablero_maquina, lista_posiciones_maquina):
             v.tablero_maquina[fila, columna] = v.SIMBOLOS["agua"]
             mostrar_tablero(v.tablero_jugador)  # Llamada a la función de Alejandro
             mostrar_tablero(v.tablero_disparos_jugador)
-            mostrar_tablero(v.tablero_maquina)  # Llamada a la función de Alejandro
-            mostrar_tablero(v.tablero_disparos_maquina) 
             v.turno_jugador = False
             return v.turno_jugador  # Cambia el turno si falla
 
     else:
         # Turno de la máquina
         fila, columna = random.choice(lista_posiciones_maquina) 
-
-        # H: entiendo que lista_posiciones_maquina es la lista de la que hablamos donde estarían todas las posibilidades de disparo de la maquina
-        #    esa lista no se si no esta hecha o si no la estoy viendo (o si te refieres a otra lista)
 
         lista_posiciones_maquina.remove((fila, columna))  # Eliminar posición usada
         print(f"La máquina dispara a ({fila}, {columna})")
@@ -257,8 +237,6 @@ def disparo(tablero_jugador, tablero_maquina, lista_posiciones_maquina):
             v.tablero_jugador[fila, columna] = v.SIMBOLOS["impacto"]
             mostrar_tablero(v.tablero_jugador)  # Llamada a la función de Alejandro
             mostrar_tablero(v.tablero_disparos_jugador)
-            mostrar_tablero(v.tablero_maquina)  # Llamada a la función de Alejandro
-            mostrar_tablero(v.tablero_disparos_maquina)  # Llamada a la función de Alejandro
 
             comprobar_victoria(v.tablero_jugador)
 
@@ -271,8 +249,6 @@ def disparo(tablero_jugador, tablero_maquina, lista_posiciones_maquina):
             tablero_jugador[fila, columna] = v.SIMBOLOS["agua"]
             mostrar_tablero(v.tablero_jugador)  # Llamada a la función de Alejandro
             mostrar_tablero(v.tablero_disparos_jugador)
-            mostrar_tablero(v.tablero_maquina)  # Llamada a la función de Alejandro
-            mostrar_tablero(v.tablero_disparos_maquina) 
             v.turno_jugador = True
             return v.turno_jugador  # Cambia el turno si falla
         
@@ -299,18 +275,14 @@ def marcar_disparo(tablero, coordenada, impacto):
 
 def mostrar_tablero(tablero):
     """
-    Muestra el tablero en forma de tabla bonita usando Pandas.
+    Muestra el tablero en forma de matriz con alineación corregida.
     """
-    df = pd.DataFrame(tablero, index=[f"{i}" for i in range(len(tablero))], 
-                      columns=[f"{j}" for j in range(len(tablero[0]))])
-    
-    print("\nTablero actualizado:\n")
-    # Muestra el tablero como tabla
-    print("    " + "   ".join(f"{i:2}" for i in df.columns))
+    # Imprimir encabezados de columna
+    print("\n   " + "  ".join(f"{i:2}" for i in range(tablero.shape[1])))
 
-    # Imprimir DataFrame con formato corregido
-    for i, row in df.iterrows():
-        print(f"{i:2} " + "  ".join(str(x).ljust(2) for x in row))
+    # Imprimir filas con índices
+    for i, fila in enumerate(tablero):
+        print(f"{i:2} " + " ".join(str(x).ljust(2) for x in fila))
 
 
 def comprobar_victoria(tablero):
