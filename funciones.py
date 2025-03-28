@@ -10,6 +10,7 @@ funciones hugo
 # Inicia lo necesario para la partida, genera tableros y coloca los barcos, la generacion de barcos habría que cambiarla por una funcion generar_flota
 # para poder generar los barcos que quieras
 def setup_partida():
+    print("¡¡¡NUEVA PARTIDA!!!!") ############################################################################################
     v.tablero_jugador = t.Tablero().crear_tablero()
     v.tablero_maquina = t.Tablero().crear_tablero()
     v.tablero_disparos_jugador = t.Tablero().crear_tablero()
@@ -18,6 +19,8 @@ def setup_partida():
 
     flota = colocar_barcos(v.tablero_jugador)
     flota_maquina = colocar_barcos(v.tablero_maquina)
+    mostrar_tablero(v.tablero_jugador) ######################################################################################
+    mostrar_tablero(v.tablero_disparos_jugador) #############################################################################
 
     return flota, flota_maquina
 
@@ -188,6 +191,11 @@ def disparo(tablero_jugador, tablero_maquina, lista_posiciones_maquina):
                     exit()
                 else:
                     continue  # Volver a pedir coordenadas
+            elif entrada == "imprimir": #####################################################################################
+                mostrar_tablero(v.tablero_jugador)
+                mostrar_tablero(v.tablero_disparos_jugador) 
+                mostrar_tablero(v.tablero_maquina)
+                mostrar_tablero(v.tablero_disparos_maquina) 
 
             try:
                 fila = int(entrada)
@@ -235,6 +243,7 @@ def disparo(tablero_jugador, tablero_maquina, lista_posiciones_maquina):
         if v.tablero_jugador[fila, columna] == v.SIMBOLOS["barco"]: # barco
             print("La máquina te ha dado!")
             v.tablero_jugador[fila, columna] = v.SIMBOLOS["impacto"]
+            v.tablero_disparos_maquina[fila, columna] = v.SIMBOLOS["impacto"] ###############################################
             mostrar_tablero(v.tablero_jugador)  # Llamada a la función de Alejandro
             mostrar_tablero(v.tablero_disparos_jugador)
 
@@ -247,6 +256,7 @@ def disparo(tablero_jugador, tablero_maquina, lista_posiciones_maquina):
         else:
             print("La máquina falló.")
             tablero_jugador[fila, columna] = v.SIMBOLOS["agua"]
+            v.tablero_disparos_maquina[fila, columna] = v.SIMBOLOS["agua"] ##################################################
             mostrar_tablero(v.tablero_jugador)  # Llamada a la función de Alejandro
             mostrar_tablero(v.tablero_disparos_jugador)
             v.turno_jugador = True
